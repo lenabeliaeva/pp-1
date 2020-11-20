@@ -6,17 +6,9 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/lenab/CLionProjects/pp/main.cpp
+C:/Users/lenab/CLionProjects/pp/second.cpp
 iostream
 -
-omp.h
--
 windows.h
--
-parallizeoptions.h
-C:/Users/lenab/CLionProjects/pp/parallizeoptions.h
-
-C:/Users/lenab/CLionProjects/pp/parallizeoptions.h
-omp.h
 -
 

@@ -4,3 +4,5 @@
 CMakeFiles/openmp_test_clion.dir/main.cpp.obj: ../main.cpp
 CMakeFiles/openmp_test_clion.dir/main.cpp.obj: ../parallizeoptions.h
 
+CMakeFiles/openmp_test_clion.dir/second.cpp.obj: ../second.cpp
+

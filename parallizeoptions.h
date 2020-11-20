@@ -2,6 +2,7 @@
 // Created by lenab on 02.10.2020.
 //
 
+#include <iostream>
 #include <omp.h>
 
 #ifndef PP_P_H
@@ -26,11 +27,12 @@ protected:
 };
 
 class Serial : public Base {
-    int **result;
     double sum = 0.0;
+    int ** result;
 
     double calc(int N, int **a, int **b) override {
         result = initResultMatrix(N);
+        sum = 0;
         for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j) {
                 result[i][j] = 0;
@@ -86,12 +88,11 @@ class Row : public Base {
 
 class Column : public Base {
     double calc(int N, int **a, int **b) override {
-        int j;
         double sum = 0.0;
         int **result = initResultMatrix(N);
         for (int i = 0; i < N; ++i) {
-#pragma omp parallel for private(j) reduction(+: sum)
-            for (j = 0; j < N; ++j) {
+#pragma omp parallel for reduction(+: sum)
+            for (int j = 0; j < N; ++j) {
                 result[i][j] = 0;
                 for (int k = 0; k < N; ++k) {
                     result[i][j] += a[i][k] * b[k][j];
@@ -109,14 +110,13 @@ class Column : public Base {
 
 class Blocks : public Base {
     double calc(int N, int **a, int **b) override {
-        int i, j;
         double sum = 0.0;
         int **result = initResultMatrix(N);
         omp_set_nested(true);
 #pragma omp parallel for reduction(+: sum)
-        for (i = 0; i < N; ++i) {
-#pragma omp parallel for private(j) reduction(+: sum)
-            for (j = 0; j < N; ++j) {
+        for (int i = 0; i < N; ++i) {
+#pragma omp parallel for reduction(+: sum)
+            for (int j = 0; j < N; ++j) {
                 result[i][j] = 0;
                 for (int k = 0; k < N; ++k) {
                     result[i][j] += a[i][k] * b[k][j];
@@ -198,13 +198,13 @@ class RowScheduleGuided : public Base {
     }
 };
 
-class RowScheduleStaticChunk : public Base {
+class RowScheduleDynamicChunk : public Base {
     int chunk;
 
     double calc(int N, int **a, int **b) override {
         double sum = 0;
         int **result = initResultMatrix(N);
-#pragma omp parallel for schedule(static, chunk) reduction(+: sum)
+#pragma omp parallel for schedule(dynamic, chunk) reduction(+: sum)
         for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j) {
                 result[i][j] = 0;
@@ -219,7 +219,7 @@ class RowScheduleStaticChunk : public Base {
 
     void getName() override {
         getChunk();
-        cout <<"По строкам static chunk = "<<chunk<<" ";
+        cout <<"По строкам dynamic chunk = "<<chunk<<" ";
     }
 
     void getChunk(){

@@ -63,9 +63,9 @@ int main() {
     cin>>N;
     int** first = generateMatrix(N);
     int** second = generateMatrix(N);
-    display(N, first, second);
-    Serial serial;
-    serial.displayResults(N, first, second);
+//    display(N, first, second);
+//    Serial serial;
+//    serial.displayResults(N, first, second);
 
 //    perform(N, first, second, new Serial());
 //    perform(N, first, second, new Row());
@@ -74,7 +74,7 @@ int main() {
 //    perform(N, first, second, new RowScheduleStatic());
 //    perform(N, first, second, new RowScheduleDynamic());
 //    perform(N, first, second, new RowScheduleGuided());
-//    perform(N, first, second, new RowScheduleStaticChunk());
+    perform(N, first, second, new RowScheduleDynamicChunk());
 
     delete [] first;
     delete [] second;
